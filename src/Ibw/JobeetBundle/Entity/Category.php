@@ -136,4 +136,13 @@ class Category
     {
         return $this->affiliates;
     }
+
+    /**
+    * Get Name
+    *
+    */
+    public function __toString() 
+    {
+      return $this->getName() ? $this->getName() : '';
+    }
 }
