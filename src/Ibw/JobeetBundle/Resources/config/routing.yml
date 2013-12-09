@@ -4,3 +4,6 @@ ibw_jobeet_homepage:
 IbwJobeetBundle_job:
     resource: "@IbwJobeetBundle/Resources/config/routing/job.yml"
     prefix:   /job
+IbwJobeetBundle_category:
+    resource: "@IbwJobeetBundle/Resources/config/routing/category.yml"
+    prefix:   /category

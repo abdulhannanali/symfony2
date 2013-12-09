@@ -1,0 +1,3 @@
+IbwJobeetBundle_category:
+    pattern:  /{slug}/{page}
+    defaults: { _controller: IbwJobeetBundle:Category:show , page : 1}
