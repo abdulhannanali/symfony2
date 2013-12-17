@@ -31,5 +31,6 @@ return array(
     'Doctrine\\Bundle\\FixturesBundle' => array($vendorDir . '/doctrine/doctrine-fixtures-bundle'),
     'Doctrine\\Bundle\\DoctrineBundle' => array($vendorDir . '/doctrine/doctrine-bundle'),
     'Assetic' => array($vendorDir . '/kriswallsmith/assetic/src'),
+    'Acme\\PizzaBundle' => array($vendorDir . '/beberlei/acme-pizza'),
     '' => array($baseDir . '/src'),
 );
