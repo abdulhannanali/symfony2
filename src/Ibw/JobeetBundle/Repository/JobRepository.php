@@ -12,52 +12,40 @@ use Doctrine\ORM\EntityRepository;
  */
 class JobRepository extends EntityRepository
 {
-	function getActiveJobs($category_id = null, $max = null, $offset = null){
-
-		$qb = $this->createQueryBuilder('j')
-		           ->where('j.expires_at > :date')
-		           ->setParameter('date', date('Y-m-d H:i:s', time()))
-		           ->andWhere('j.is_activated = :activated')
-                   ->setParameter('activated', 1)
-		           ->orderBy('j.expires_at', 'DESC');
-
-        if($max){
-        	$qb->setMaxResults($max);
-        }
-        if($offset)
-	    {
-	        $qb->setFirstResult($offset);
-	    }
-		if($category_id){
-			$qb->andWhere('j.category = :category_id')
-                ->setParameter('category_id', $category_id);
-		}
-
-        $query = $qb->getQuery();
-
-     return $query->getResult();
-	} 
-
-	function getActiveJob($id) {
-        
-		$query = $this->createQueryBuilder('j')
-            ->where('j.id = :id')
-            ->setParameter('id', $id)
-            ->andWhere('j.expires_at > :date')
+	function getActiveJobs($category_id = null, $max = null, $offset = null, $affiliate_id = null)
+    {
+        $qb = $this->createQueryBuilder('j')
+            ->where('j.expires_at > :date')
             ->setParameter('date', date('Y-m-d H:i:s', time()))
             ->andWhere('j.is_activated = :activated')
             ->setParameter('activated', 1)
-            ->setMaxResults(1)
-            ->getQuery();
+            ->orderBy('j.expires_at', 'DESC');
  
-        try {
-            $job = $query->getSingleResult();
-        } catch (\Doctrine\Orm\NoResultException $e) {
-            $job = null;
+        if($max) {
+            $qb->setMaxResults($max);
         }
  
-        return $job;
-	}
+        if($offset) {
+            $qb->setFirstResult($offset);
+        }
+ 
+        if($category_id) {
+            $qb->andWhere('j.category = :category_id')
+                ->setParameter('category_id', $category_id);
+        }
+        // j.category c, c.affiliate a
+        if($affiliate_id) {
+            $qb->leftJoin('j.category', 'c')
+               ->leftJoin('c.affiliates', 'a')
+               ->andWhere('a.id = :affiliate_id')
+               ->setParameter('affiliate_id', $affiliate_id)
+            ;
+        }
+ 
+        $query = $qb->getQuery();
+ 
+        return $query->getResult();
+    }
 
 	function countActiveJobs($category_id = null) {
 
