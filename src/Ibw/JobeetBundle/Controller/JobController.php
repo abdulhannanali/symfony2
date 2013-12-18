@@ -31,10 +31,23 @@ class JobController extends Controller
             $category->setMoreJobs($em->getRepository('IbwJobeetBundle:Job')->countActiveJobs($category->getId()) - 
                 $this->container->getParameter('max_jobs_on_homepage'));
         }
+        
+        $latestJob = $em->getRepository('IbwJobeetBundle:Job')->getLatestPost();
  
-        return $this->render('IbwJobeetBundle:Job:index.html.twig', array(
-            'categories' => $categories
+        if($latestJob) {
+            $lastUpdated = $latestJob->getCreatedAt()->format(DATE_ATOM);
+        } else {
+            $lastUpdated = new \DateTime();
+            $lastUpdated = $lastUpdated->format(DATE_ATOM);
+        }
+ 
+        $format = $this->getRequest()->getRequestFormat();
+        return $this->render('IbwJobeetBundle:Job:index.'.$format.'.twig', array(
+               'categories' => $categories,
+               'lastUpdated' => $lastUpdated,
+               'feedId' => sha1($this->get('router')->generate('ibw_job', array('_format'=> 'atom'), true)),
         ));
+
     }
     /**
      * Creates a new Job entity.
@@ -108,18 +121,35 @@ class JobController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
+ 
         $entity = $em->getRepository('IbwJobeetBundle:Job')->getActiveJob($id);
-
+     
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Job entity.');
         }
-
+     
+        $session = $this->getRequest()->getSession();
+     
+        // fetch jobs already stored in the job history
+        $jobs = $session->get('job_history', array());
+     
+        // store the job as an array so we can put it in the session and avoid entity serialize errors
+        $job = array('id' => $entity->getId(), 'position' =>$entity->getPosition(), 'company' => $entity->getCompany(), 'companyslug' => $entity->getCompanySlug(), 'locationslug' => $entity->getLocationSlug(), 'positionslug' => $entity->getPositionSlug());
+     
+        if (!in_array($job, $jobs)) {
+            // add the current job at the beginning of the array
+            array_unshift($jobs, $job);
+     
+            // store the new job history back into the session
+            $session->set('job_history', array_slice($jobs, 0, 3));
+        }
+     
         $deleteForm = $this->createDeleteForm($id);
-
+     
         return $this->render('IbwJobeetBundle:Job:show.html.twig', array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+            'delete_form' => $deleteForm->createView(),
+        ));
     }
 
     /**
@@ -276,7 +306,7 @@ class JobController extends Controller
             $entity->publish();
             $em->persist($entity);
             $em->flush();
-     
+            
             $this->get('session')->getFlashBag()->add('notice', 'Your job is now online for 30 days.');
         }
      
