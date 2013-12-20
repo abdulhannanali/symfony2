@@ -41,3 +41,7 @@ ibw_job_publish:
     pattern:  /{token}/publish
     defaults: { _controller: "IbwJobeetBundle:Job:publish" }
     requirements: { _method: post }
+    
+ibw_job_search:
+    pattern: /search
+    defaults: { _controller: "IbwJobeetBundle:Job:search" }
