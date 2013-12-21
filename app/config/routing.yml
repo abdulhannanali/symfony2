@@ -1,3 +1,7 @@
+sdz_blog:
+    resource: "@SdzBlogBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ibw_jobeet:
     resource: "@IbwJobeetBundle/Resources/config/routing.yml"
     prefix:   /
