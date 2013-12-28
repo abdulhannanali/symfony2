@@ -1,1 +1,17 @@
+<<<<<<< HEAD
 /nbproject/private/
+=======
+# Bootstrap
+app/bootstrap*
+
+# Symfony directories
+vendor/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/*
+
+# Configuration files
+app/config/parameters.ini
+app/config/parameters.yml
+>>>>>>> 7434a67a29e1f89e8dedc4eeab044c81cbba2528
