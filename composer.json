@@ -20,7 +20,12 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "doctrine/data-fixtures": "dev-master"
+        "doctrine/data-fixtures": "dev-master",
+        "beberlei/acme-pizza": "dev-master",
+        "sonata-project/admin-bundle": "2.2.*@dev",
+        "sonata-project/doctrine-orm-admin-bundle": "2.2.*@dev",
+        "stof/doctrine-extensions-bundle": "dev-master",
+        "zendframework/zendframework1": "1.12.3"
     },
     "scripts": {
         "post-install-cmd": [

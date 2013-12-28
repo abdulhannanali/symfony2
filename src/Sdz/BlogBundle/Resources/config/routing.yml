@@ -1,6 +1,6 @@
 sdzblog_accueil:
-    path: /{page}
-    defaults: { _controller: SdzBlogBundle:Blog:index, page:1 }
+    path:  /{page}
+    defaults: { _controller: SdzBlogBundle:Blog:index, page: 1 }
     requirements:
         page: \d*
 sdzblog_voir:

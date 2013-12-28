@@ -6,13 +6,9 @@ parameters:
     database_name: jobeet
     database_user: root
     database_password: root
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_user: focus69m@gmail.com
+    mailer_password: mamadouniang
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
-    mailer_transport:  gmail
-    mailer_host:       ~
-    mailer_user:       focus69m@gmail.com
-    mailer_password:   mamadouniang
